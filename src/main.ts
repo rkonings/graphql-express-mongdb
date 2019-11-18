@@ -4,11 +4,18 @@ import { IResolvers } from 'graphql-tools';
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
-import Users from './Models/Users';
+import User from './Models/Users';
 import typeDefs from './schema.graphql';
 import { resolvers } from './resolvers';
 // import cors from 'cors';
+
+mongoose.Promise = global.Promise;
+const url = 'mongodb+srv://randykonings:ecB8T6MG8Rz1kKLp@cluster0-vfhnx.mongodb.net/test?retryWrites=true&w=majority';
+
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.once('open', () => console.log(`Connected to mongo at ${url}`));
 
 const app = express();
 // const corsOptions = {
@@ -21,9 +28,21 @@ const app = express();
 
 const SECRET_KEY = 'secret!';
 
+app.post('/signup',express.urlencoded(), async (req, res ) => {
+  const { email, password } = req.body;
+  const cryptedPassword = await bcrypt.hash(password, 10);
+  const user = await User.create({email, password: cryptedPassword});
+
+  res.send({
+    success: true,
+    user,
+  })
+});
+
 app.post('/login', express.urlencoded(), async (req, res) => {
   const { email, password } = req.body;
-  const theUser = Users.find(user => user.email === email)
+
+  const theUser = await User.findOne({email}).exec();
 
   if (!theUser) {
     res.status(404).send({
@@ -60,9 +79,7 @@ const context: ContextFunction = ({ req }) => {
   try {
     return jwt.verify(token, SECRET_KEY) as Object;
   } catch (e) {
-    throw new AuthenticationError(
-      'Authentication token is invalid, please log in',
-    )
+    return {};
   }
 }
 
