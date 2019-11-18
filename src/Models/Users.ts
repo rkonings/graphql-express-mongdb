@@ -3,11 +3,13 @@ import { Schema, Document } from 'mongoose';
 
 
 interface UserModel {
+  id: string;
   email: string;
   password: string;
 }
 
 const userSchema = new Schema({
+  id: String,
   email: String,
   password: String
 });

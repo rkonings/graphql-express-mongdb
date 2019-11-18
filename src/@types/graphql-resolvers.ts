@@ -27,6 +27,13 @@ export type Query = {
    __typename?: 'Query',
   posts?: Maybe<Array<Maybe<Post>>>,
   authors?: Maybe<Array<Maybe<Author>>>,
+  users?: Maybe<Array<Maybe<User>>>,
+};
+
+export type User = {
+   __typename?: 'User',
+  id: Scalars['String'],
+  email: Scalars['String'],
 };
 
 
@@ -104,6 +111,7 @@ export type ResolversTypes = {
   Post: ResolverTypeWrapper<Post>,
   String: ResolverTypeWrapper<Scalars['String']>,
   Author: ResolverTypeWrapper<Author>,
+  User: ResolverTypeWrapper<User>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 };
 
@@ -113,6 +121,7 @@ export type ResolversParentTypes = {
   Post: Post,
   String: Scalars['String'],
   Author: Author,
+  User: User,
   Boolean: Scalars['Boolean'],
 };
 
@@ -131,12 +140,19 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>,
   authors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Author']>>>, ParentType, ContextType>,
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
+};
+
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 };
 
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>,
   Post?: PostResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
+  User?: UserResolvers<ContextType>,
 };
 
 

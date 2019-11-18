@@ -1,4 +1,5 @@
-import { Resolvers, Post, Author } from './@types/graphql-resolvers';
+import { Resolvers, Post, Author, User } from './@types/graphql-resolvers';
+import Users from './Models/Users';
 
 const authors: Author[] = [
     { id: 'FOOBAR', name: 'FOOBAR' },
@@ -19,6 +20,10 @@ export const resolvers: Resolvers = {
         },
         authors: () => {
             return authors;
+        },
+        users: async () => {
+            const users = await Users.find({}).exec();
+            return users;
         }
     },
     Author: {

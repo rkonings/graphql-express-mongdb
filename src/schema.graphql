@@ -11,9 +11,15 @@ type Post {
   author: Author
 }
 
+type User {
+  id: String!
+  email: String!
+}
+
 type Query {
   posts: [Post]
   authors: [Author]
+  users: [User]
 }
 
 schema {
