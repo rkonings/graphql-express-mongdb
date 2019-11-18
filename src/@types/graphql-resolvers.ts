@@ -16,6 +16,17 @@ export type Author = {
   posts?: Maybe<Array<Maybe<Post>>>,
 };
 
+export type Client = {
+   __typename?: 'Client',
+  id: Scalars['String'],
+  name: Scalars['String'],
+  address: Scalars['String'],
+  zipcode: Scalars['String'],
+  telephone: Scalars['String'],
+  city: Scalars['String'],
+  user: Scalars['String'],
+};
+
 export type Post = {
    __typename?: 'Post',
   id: Scalars['String'],
@@ -28,6 +39,7 @@ export type Query = {
   posts?: Maybe<Array<Maybe<Post>>>,
   authors?: Maybe<Array<Maybe<Author>>>,
   users?: Maybe<Array<Maybe<User>>>,
+  clients?: Maybe<Array<Maybe<Client>>>,
 };
 
 export type User = {
@@ -112,6 +124,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>,
   Author: ResolverTypeWrapper<Author>,
   User: ResolverTypeWrapper<User>,
+  Client: ResolverTypeWrapper<Client>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 };
 
@@ -122,6 +135,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'],
   Author: Author,
   User: User,
+  Client: Client,
   Boolean: Scalars['Boolean'],
 };
 
@@ -129,6 +143,16 @@ export type AuthorResolvers<ContextType = any, ParentType extends ResolversParen
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>,
+};
+
+export type ClientResolvers<ContextType = any, ParentType extends ResolversParentTypes['Client'] = ResolversParentTypes['Client']> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  zipcode?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  telephone?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  city?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  user?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
@@ -141,6 +165,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>,
   authors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Author']>>>, ParentType, ContextType>,
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
+  clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType>,
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -150,6 +175,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>,
+  Client?: ClientResolvers<ContextType>,
   Post?: PostResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   User?: UserResolvers<ContextType>,

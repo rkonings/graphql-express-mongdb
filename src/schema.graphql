@@ -16,10 +16,21 @@ type User {
   email: String!
 }
 
+type Client {
+  id: String!
+  name: String!
+  address: String!
+  zipcode: String!
+  telephone: String!
+  city: String!
+  user: String!
+}
+
 type Query {
   posts: [Post]
   authors: [Author]
   users: [User]
+  clients: [Client]
 }
 
 schema {

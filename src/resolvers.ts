@@ -1,5 +1,7 @@
+import { AuthenticationError } from 'apollo-server-express';
 import { Resolvers, Post, Author, User } from './@types/graphql-resolvers';
 import Users from './Models/Users';
+import Clients from './Models/Clients';
 
 const authors: Author[] = [
     { id: 'FOOBAR', name: 'FOOBAR' },
@@ -24,6 +26,11 @@ export const resolvers: Resolvers = {
         users: async () => {
             const users = await Users.find({}).exec();
             return users;
+        },
+        clients: async (obj, args, {_id}, info) => {
+            if (!_id) throw new AuthenticationError('you must be logged in'); 
+            const clients = await Clients.find({user: _id}).exec();
+            return clients;
         }
     },
     Author: {
