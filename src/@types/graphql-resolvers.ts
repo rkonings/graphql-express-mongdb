@@ -27,6 +27,20 @@ export type Client = {
   user: Scalars['String'],
 };
 
+export type Mutation = {
+   __typename?: 'Mutation',
+  addClient?: Maybe<Client>,
+};
+
+
+export type MutationAddClientArgs = {
+  name?: Maybe<Scalars['String']>,
+  address?: Maybe<Scalars['String']>,
+  zipcode?: Maybe<Scalars['String']>,
+  city?: Maybe<Scalars['String']>,
+  telephone?: Maybe<Scalars['String']>
+};
+
 export type Post = {
    __typename?: 'Post',
   id: Scalars['String'],
@@ -125,6 +139,7 @@ export type ResolversTypes = {
   Author: ResolverTypeWrapper<Author>,
   User: ResolverTypeWrapper<User>,
   Client: ResolverTypeWrapper<Client>,
+  Mutation: ResolverTypeWrapper<{}>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 };
 
@@ -136,6 +151,7 @@ export type ResolversParentTypes = {
   Author: Author,
   User: User,
   Client: Client,
+  Mutation: {},
   Boolean: Scalars['Boolean'],
 };
 
@@ -153,6 +169,10 @@ export type ClientResolvers<ContextType = any, ParentType extends ResolversParen
   telephone?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   user?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationAddClientArgs>,
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
@@ -176,6 +196,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>,
   Client?: ClientResolvers<ContextType>,
+  Mutation?: MutationResolvers<ContextType>,
   Post?: PostResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   User?: UserResolvers<ContextType>,

@@ -16,6 +16,13 @@ const posts: Post[] = [
 
 
 export const resolvers: Resolvers = {
+    Mutation: {
+        addClient: async (_, obj, {_id}) => {
+            if (!_id) throw new AuthenticationError('you must be logged in'); 
+            const client = await Clients.create({...obj,user: _id});
+            return client;
+        } 
+    },
     Query: {
         posts: () => {
             return posts;

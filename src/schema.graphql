@@ -33,6 +33,17 @@ type Query {
   clients: [Client]
 }
 
+type Mutation {
+  addClient(
+    name: String,
+    address: String,
+    zipcode: String,
+    city: String,
+    telephone: String
+  ): Client
+}
+
 schema {
   query: Query
+  mutation: Mutation
 }
