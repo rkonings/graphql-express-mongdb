@@ -63,7 +63,7 @@ app.post('/login', express.urlencoded(), async (req, res) => {
   }
 
   const token = jwt.sign(
-    { email: theUser.email, id: theUser.id },
+    {_id: theUser._id, email: theUser.email},
     SECRET_KEY,
   )
 
@@ -77,7 +77,7 @@ const context: ContextFunction = ({ req }) => {
   const rawToken = req.headers.authorization || '';
   const token = rawToken.split(' ')[1];
   try {
-    return jwt.verify(token, SECRET_KEY) as Object;
+    return jwt.verify(token, SECRET_KEY) as object;
   } catch (e) {
     return {};
   }
