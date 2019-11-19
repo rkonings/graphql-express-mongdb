@@ -2,11 +2,9 @@ import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import { ContextFunction } from 'apollo-server-core';
 import { IResolvers } from 'graphql-tools';
 import express from 'express';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
-import User from './Models/Users';
 import typeDefs from './schema.graphql';
 import { resolvers } from './resolvers';
 // import cors from 'cors';
