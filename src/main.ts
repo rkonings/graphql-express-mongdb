@@ -83,21 +83,24 @@ const context: ContextFunction = ({ req }) => {
   }
 }
 
-const server = new ApolloServer({
+const apolloServer = new ApolloServer({
   resolvers: resolvers as IResolvers,
   typeDefs,
   context,
 });
  
-server.applyMiddleware({app});
+apolloServer.applyMiddleware({app});
 const port  = 4000;
 
-app.listen({port},
+const server = app.listen({port},
   () => console.log(`The GraphQL server is running on port ${port}`)
 )
  
 // Hot Module Replacement
 if (module.hot) {
     module.hot.accept();
-    module.hot.dispose(() => console.log('Module disposed. '));
+    module.hot.dispose(() => {
+      server.close();
+      console.log('Module disposed. ')
+    });
 }
