@@ -28,51 +28,6 @@ const app = express();
 
 const SECRET_KEY = 'secret!';
 
-// app.post('/signup',express.urlencoded(), async (req, res ) => {
-//   const { email, password } = req.body;
-//   const cryptedPassword = await bcrypt.hash(password, 10);
-//   const user = await User.create({email, password: cryptedPassword});
-
-//   res.send({
-//     success: true,
-//     user,
-//   })
-// });
-
-// app.post('/login', express.urlencoded(), async (req, res) => {
-//   const { email, password } = req.body;
-
-//   const theUser = await User.findOne({email}).exec();
-
-//   if (!theUser) {
-//     res.status(404).send({
-//       success: false,
-//       message: `Could not find account: ${email}`,
-//     })
-//     return
-//   }
-
-//   const match = await bcrypt.compare(password, theUser.password);
-//   if (!match) {
-//     //return error to user to let them know the password is incorrect
-//     res.status(401).send({
-//       success: false,
-//       message: 'Incorrect credentials',
-//     })
-//     return
-//   }
-
-//   const token = jwt.sign(
-//     {_id: theUser._id, email: theUser.email},
-//     SECRET_KEY,
-//   )
-
-//   res.send({
-//     success: true,
-//     token: token,
-//   })
-// });
-
 const context: ContextFunction = ({ req }) => {
   const rawToken = req.headers.authorization || '';
   const token = rawToken.split(' ')[1];
