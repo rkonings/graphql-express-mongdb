@@ -12,12 +12,12 @@ type Post {
 }
 
 type User {
-  id: String!
+  _id: String!
   email: String!
 }
 
 type Client {
-  id: String!
+  _id: String!
   name: String!
   address: String!
   zipcode: String!
@@ -33,6 +33,10 @@ type Query {
   clients: [Client]
 }
 
+type Token {
+  token: String!
+}
+
 type Mutation {
   addClient(
     name: String,
@@ -40,7 +44,10 @@ type Mutation {
     zipcode: String,
     city: String,
     telephone: String
-  ): Client
+  ): Client,
+  
+  signup(email: String!, password: String!): User
+  login(email: String!, password: String!): Token
 }
 
 schema {

@@ -1,5 +1,6 @@
 import { GraphQLResolveInfo } from 'graphql';
 export type Maybe<T> = T | null;
+export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string,
@@ -18,7 +19,7 @@ export type Author = {
 
 export type Client = {
    __typename?: 'Client',
-  id: Scalars['String'],
+  _id: Scalars['String'],
   name: Scalars['String'],
   address: Scalars['String'],
   zipcode: Scalars['String'],
@@ -30,6 +31,8 @@ export type Client = {
 export type Mutation = {
    __typename?: 'Mutation',
   addClient?: Maybe<Client>,
+  signup?: Maybe<User>,
+  login?: Maybe<Token>,
 };
 
 
@@ -39,6 +42,18 @@ export type MutationAddClientArgs = {
   zipcode?: Maybe<Scalars['String']>,
   city?: Maybe<Scalars['String']>,
   telephone?: Maybe<Scalars['String']>
+};
+
+
+export type MutationSignupArgs = {
+  email: Scalars['String'],
+  password: Scalars['String']
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String'],
+  password: Scalars['String']
 };
 
 export type Post = {
@@ -56,9 +71,14 @@ export type Query = {
   clients?: Maybe<Array<Maybe<Client>>>,
 };
 
+export type Token = {
+   __typename?: 'Token',
+  token: Scalars['String'],
+};
+
 export type User = {
    __typename?: 'User',
-  id: Scalars['String'],
+  _id: Scalars['String'],
   email: Scalars['String'],
 };
 
@@ -140,6 +160,7 @@ export type ResolversTypes = {
   User: ResolverTypeWrapper<User>,
   Client: ResolverTypeWrapper<Client>,
   Mutation: ResolverTypeWrapper<{}>,
+  Token: ResolverTypeWrapper<Token>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 };
 
@@ -152,6 +173,7 @@ export type ResolversParentTypes = {
   User: User,
   Client: Client,
   Mutation: {},
+  Token: Token,
   Boolean: Scalars['Boolean'],
 };
 
@@ -162,7 +184,7 @@ export type AuthorResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type ClientResolvers<ContextType = any, ParentType extends ResolversParentTypes['Client'] = ResolversParentTypes['Client']> = {
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   zipcode?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
@@ -173,6 +195,8 @@ export type ClientResolvers<ContextType = any, ParentType extends ResolversParen
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationAddClientArgs>,
+  signup?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password'>>,
+  login?: Resolver<Maybe<ResolversTypes['Token']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>,
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
@@ -188,8 +212,12 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType>,
 };
 
+export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
+
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 };
 
@@ -199,6 +227,7 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>,
   Post?: PostResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
+  Token?: TokenResolvers<ContextType>,
   User?: UserResolvers<ContextType>,
 };
 
