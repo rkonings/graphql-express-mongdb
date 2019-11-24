@@ -64,10 +64,10 @@ export const resolvers: Resolvers = {
             const users = await Users.find({}).exec();
             return users;
         },
-        clients: async (obj, args, {_id}, info) => {
+        clients: async (_, __, {_id}, ___) => {
             if (!_id) throw new AuthenticationError('you must be logged in'); 
             const clients = await Clients.find({user: _id}).exec();
-            return clients;
+            return clients.map((client) => {return { data: client }});
         }
     },
     Author: {
