@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 
 import typeDefs from './schema.graphql';
 import { resolvers } from './resolvers';
-// import cors from 'cors';
+import cors from 'cors';
 
 mongoose.Promise = global.Promise;
 const url = 'mongodb+srv://randykonings:ecB8T6MG8Rz1kKLp@cluster0-vfhnx.mongodb.net/test?retryWrites=true&w=majority';
@@ -16,13 +16,12 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once('open', () => console.log(`Connected to mongo at ${url}`));
 
 const app = express();
-// const corsOptions = {
-//   origin: 'http://localhost:3001',
-//   credentials: true
-// }
+const corsOptions = {
+  origin: 'http://localhost:8080',
+  credentials: true
+}
 
-// app.use(cors(corsOptions))
-
+app.use(cors(corsOptions))
 
 const SECRET_KEY = 'secret!';
 
