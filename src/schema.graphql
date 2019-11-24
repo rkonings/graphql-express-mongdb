@@ -48,6 +48,8 @@ type Mutation {
   
   signup(email: String!, password: String!): User
   login(email: String!, password: String!): Token
+
+  seedClients(amount: Int!): [Client]
 }
 
 schema {
