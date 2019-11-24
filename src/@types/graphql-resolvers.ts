@@ -33,7 +33,7 @@ export type Mutation = {
   addClient?: Maybe<Client>,
   signup?: Maybe<User>,
   login?: Maybe<Token>,
-  seedClients?: Maybe<Array<Maybe<User>>>,
+  seedClients?: Maybe<Array<Maybe<Client>>>,
 };
 
 
@@ -205,7 +205,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationAddClientArgs>,
   signup?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password'>>,
   login?: Resolver<Maybe<ResolversTypes['Token']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>,
-  seedClients?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<MutationSeedClientsArgs, 'amount'>>,
+  seedClients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType, RequireFields<MutationSeedClientsArgs, 'amount'>>,
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
