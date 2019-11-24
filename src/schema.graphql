@@ -26,11 +26,15 @@ type Client {
   user: String!
 }
 
+type ClientData {
+  data: Client
+}
+
 type Query {
   posts: [Post]
   authors: [Author]
   users: [User]
-  clients: [Client]
+  clients: [ClientData]
 }
 
 type Token {
