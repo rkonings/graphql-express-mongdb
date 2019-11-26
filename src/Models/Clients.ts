@@ -9,6 +9,7 @@ interface ClientModel {
     telephone: string;
     city: string;
     user: string;
+    type: string;
 }
 
 const clientSchema = new Schema({
@@ -18,6 +19,7 @@ const clientSchema = new Schema({
     zipcode: String,
     telephone: String,
     city: String,
+    type: String,
     user: {type: mongoose.Schema.Types.ObjectId,ref:'User'}
 });
 
