@@ -37,6 +37,11 @@ const Cities = [
     'Amersfoort'
 ];
 
+interface ClientFilter {
+    type?: Array<null|string> | null;
+    city?: Array<null|string> | null;
+    user: string;
+}
 
 export const resolvers: Resolvers = {
     Mutation: {
@@ -85,9 +90,21 @@ export const resolvers: Resolvers = {
             const users = await Users.find({}).exec();
             return users;
         },
-        clients: async (_, __, {_id}, ___) => {
+        clients: async (_, {type, city}, {_id}, ___) => {
             if (!_id) throw new AuthenticationError('you must be logged in'); 
-            const clients = await Clients.find({user: _id}).exec();
+            const filter: ClientFilter = {
+                user: _id,
+            };
+
+            if (type) {
+                filter.type = type;
+            }
+
+            if (city) {
+                filter.city = city;
+            }
+
+            const clients = await Clients.find(filter).exec();
             return clients.map((client) => {return { data: client }});
         }
     },
