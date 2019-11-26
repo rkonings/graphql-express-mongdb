@@ -24,6 +24,7 @@ type Client {
   telephone: String!
   city: String!
   user: String!
+  type: String
 }
 
 type ClientData {
@@ -34,7 +35,7 @@ type Query {
   posts: [Post]
   authors: [Author]
   users: [User]
-  clients: [ClientData]
+  clients(type: [String], city: [String]): [ClientData]
 }
 
 type Token {

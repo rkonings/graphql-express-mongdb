@@ -4,7 +4,7 @@ import Users from './Models/Users';
 import Clients from './Models/Clients';
 import auth from './Auth';
 import bcrypt from 'bcrypt';
-import faker from 'faker';
+import faker from 'faker/locale/nl';
 
 const authors: Author[] = [
     { id: 'FOOBAR', name: 'FOOBAR' },
@@ -17,6 +17,31 @@ const posts: Post[] = [
     { id: 'BAR', title: 'Post 2', author: authors[1] }
 ];
 
+const ClientTypes = [
+    'Klant',
+    'Prospect',
+    'Lead',
+    'Suspect'
+];
+
+const Cities = [
+    'Utrecht',
+    'Nieuwegein',
+    'Eindhoven',
+    'Ijsselstein',
+    'Amsterdam',
+    'Hellendoorn',
+    'Hilversum',
+    'Breda',
+    'Bilthoven',
+    'Amersfoort'
+];
+
+interface ClientFilter {
+    type?: Array<null|string> | null;
+    city?: Array<null|string> | null;
+    user: string;
+}
 
 export const resolvers: Resolvers = {
     Mutation: {
@@ -43,9 +68,10 @@ export const resolvers: Resolvers = {
                     name: faker.company.companyName(),
                     address: faker.address.streetAddress(),
                     zipcode: faker.address.zipCode(),
-                    city: faker.address.city(),
+                    city: Cities[Math.floor(Math.random() * Cities.length)],
                     telephone: faker.phone.phoneNumber(),
-                    user: _id
+                    user: _id,
+                    type: ClientTypes[Math.floor(Math.random() * ClientTypes.length)]
                 });
             }
 
@@ -64,9 +90,21 @@ export const resolvers: Resolvers = {
             const users = await Users.find({}).exec();
             return users;
         },
-        clients: async (_, __, {_id}, ___) => {
+        clients: async (_, {type, city}, {_id}, ___) => {
             if (!_id) throw new AuthenticationError('you must be logged in'); 
-            const clients = await Clients.find({user: _id}).exec();
+            const filter: ClientFilter = {
+                user: _id,
+            };
+
+            if (type) {
+                filter.type = type;
+            }
+
+            if (city) {
+                filter.city = city;
+            }
+
+            const clients = await Clients.find(filter).exec();
             return clients.map((client) => {return { data: client }});
         }
     },

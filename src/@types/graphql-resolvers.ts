@@ -26,6 +26,7 @@ export type Client = {
   telephone: Scalars['String'],
   city: Scalars['String'],
   user: Scalars['String'],
+  type?: Maybe<Scalars['String']>,
 };
 
 export type ClientData = {
@@ -80,6 +81,12 @@ export type Query = {
   authors?: Maybe<Array<Maybe<Author>>>,
   users?: Maybe<Array<Maybe<User>>>,
   clients?: Maybe<Array<Maybe<ClientData>>>,
+};
+
+
+export type QueryClientsArgs = {
+  type?: Maybe<Array<Maybe<Scalars['String']>>>,
+  city?: Maybe<Array<Maybe<Scalars['String']>>>
 };
 
 export type Token = {
@@ -206,6 +213,7 @@ export type ClientResolvers<ContextType = any, ParentType extends ResolversParen
   telephone?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   user?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
 };
 
 export type ClientDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['ClientData'] = ResolversParentTypes['ClientData']> = {
@@ -229,7 +237,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>,
   authors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Author']>>>, ParentType, ContextType>,
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
-  clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['ClientData']>>>, ParentType, ContextType>,
+  clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['ClientData']>>>, ParentType, ContextType, QueryClientsArgs>,
 };
 
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
