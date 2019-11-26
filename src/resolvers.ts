@@ -4,7 +4,7 @@ import Users from './Models/Users';
 import Clients from './Models/Clients';
 import auth from './Auth';
 import bcrypt from 'bcrypt';
-import faker from 'faker';
+import faker from 'faker/locale/nl';
 
 const authors: Author[] = [
     { id: 'FOOBAR', name: 'FOOBAR' },
@@ -15,6 +15,26 @@ const posts: Post[] = [
     { id: 'FOO', title: 'Post 1', author: authors[0] },
     { id: 'BAR', title: 'Post 2', author: authors[1] },
     { id: 'BAR', title: 'Post 2', author: authors[1] }
+];
+
+const ClientTypes = [
+    'Klant',
+    'Prospect',
+    'Lead',
+    'Suspect'
+];
+
+const Cities = [
+    'Utrecht',
+    'Nieuwegein',
+    'Eindhoven',
+    'Ijsselstein',
+    'Amsterdam',
+    'Hellendoorn',
+    'Hilversum',
+    'Breda',
+    'Bilthoven',
+    'Amersfoort'
 ];
 
 
@@ -43,9 +63,10 @@ export const resolvers: Resolvers = {
                     name: faker.company.companyName(),
                     address: faker.address.streetAddress(),
                     zipcode: faker.address.zipCode(),
-                    city: faker.address.city(),
+                    city: Cities[Math.floor(Math.random() * Cities.length)],
                     telephone: faker.phone.phoneNumber(),
-                    user: _id
+                    user: _id,
+                    type: ClientTypes[Math.floor(Math.random() * ClientTypes.length)]
                 });
             }
 
