@@ -6,12 +6,32 @@ interface UserModel {
   id: string;
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
+  settings?: {
+    language: string;
+    dateFormat: string;
+    pushNotifications: boolean;
+    unscribeEmailLink: boolean;
+    signature: string;
+  }
+  
 }
 
 const userSchema = new Schema({
   id: String,
   email: String,
-  password: String
+  password: String,
+  firstName: String,
+  lastName: String,
+  settings: {
+    language: String,
+    dateFormat: String,
+    pushNotifications: Boolean,
+    unscribeEmailLink: Boolean,
+    signature: String
+  }
+  
 });
 
 const User = mongoose.model<UserModel & Document>('User', userSchema); 

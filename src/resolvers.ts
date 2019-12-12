@@ -54,11 +54,25 @@ export const resolvers: Resolvers = {
             const token = await auth(email, password, 'secret!');
             return {token};
         },
-        signup: async (_, {email, password}) => {
+        signup: async (_, {email, password, firstName, lastName}) => {
             const cryptedPassword = await bcrypt.hash(password, 10);
-            const user = await Users.create({email, password: cryptedPassword});
-            console.log(user);
+            const settings = {
+                language: 'nl',
+                dateFormat: 'nl',
+                pushNotifications: true,
+                unscribeEmailLink: true,
+                signature: 'A really long signature to end the message with a good vibe'
+            }
+            const user = await Users.create({email, password: cryptedPassword, firstName, lastName, settings});
             return user;
+        },
+        updateUser: async (_, {user}, {_id}) => {
+            const result = await Users.findById(_id);
+            if (result){
+                result.set(user);
+                result.save();
+            }
+            return result;
         },
         seedClients: async (_, {amount}, {_id}) => {
 
@@ -80,6 +94,9 @@ export const resolvers: Resolvers = {
         }
     },
     Query: {
+        user: (_, __, {_id}) => {
+            return Users.findById(_id).exec();
+        },
         posts: () => {
             return posts;
         },
