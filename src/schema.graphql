@@ -27,31 +27,34 @@ type Client {
   type: String
 }
 
-type ClientData {
-  data: Client
-}
-
 type Query {
   posts: [Post]
   authors: [Author]
   users: [User]
-  clients(type: [String], city: [String]): [ClientData]
+  user: User
+  client(_id: String): Client
+  clients(type: [String], city: [String]): [Client]
 }
 
 type Token {
   token: String!
 }
 
+input ClientInput {
+  _id: String
+  name: String
+  address: String
+  zipcode: String
+  city: String
+  telephone: String
+  type: String
+}
+
 type Mutation {
-  addClient(
-    name: String,
-    address: String,
-    zipcode: String,
-    city: String,
-    telephone: String
-  ): Client,
+  addClient(client: ClientInput): Client
+  updateClient(client: ClientInput): Client
   
-  signup(email: String!, password: String!): User
+  signup(email: String!, password: String!, firstName: String!, lastName: String!): User
   login(email: String!, password: String!): Token
 
   seedClients(amount: Int!): [Client]

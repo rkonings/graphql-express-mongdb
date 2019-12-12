@@ -1,4 +1,4 @@
-import { AuthenticationError } from 'apollo-server-express';
+import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { Resolvers, Post, Author, User } from './@types/graphql-resolvers';
 import Users from './Models/Users';
 import Clients from './Models/Clients';
@@ -43,12 +43,16 @@ interface ClientFilter {
     user: string;
 }
 
+const delay = async (ms: number) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export const resolvers: Resolvers = {
     Mutation: {
-        addClient: async (_, obj, {_id}) => {
+        addClient: async (_, {client}, {_id}) => {
             if (!_id) throw new AuthenticationError('you must be logged in'); 
-            const client = await Clients.create({...obj,user: _id});
-            return client;
+            const result = await Clients.create({...client,user: _id});
+            return result;
         },
         login: async (_, {email, password}) => {
             const token = await auth(email, password, 'secret!');
@@ -59,6 +63,28 @@ export const resolvers: Resolvers = {
             const user = await Users.create({email, password: cryptedPassword});
             console.log(user);
             return user;
+        },
+        updateUser: async (_, {user}, {_id}) => {
+            const result = await Users.findById(_id);
+            if (result){
+                result.set(user);
+                result.save();
+            }
+            return result;
+        },
+        updateClient: async (_, {client}, {_id}) => {
+            if(!client) {
+                throw new UserInputError('No client data');
+            }
+            if(!client._id) {
+                throw new UserInputError('No client._id');
+            }
+            const result = await Clients.findById(client._id);
+            if (result){
+                result.set(client);
+                result.save();
+            }
+            return result;
         },
         seedClients: async (_, {amount}, {_id}) => {
 
@@ -80,6 +106,14 @@ export const resolvers: Resolvers = {
         }
     },
     Query: {
+        user: async (_, __, {_id}) => {
+            // await delay(5000);
+            return Users.findById(_id).exec();
+        },
+        client: async (_, {_id}, {_id: user}) => {
+            console.log(_id);
+            return Clients.findOne({_id, user}).exec();
+        },
         posts: () => {
             return posts;
         },
@@ -105,7 +139,8 @@ export const resolvers: Resolvers = {
             }
 
             const clients = await Clients.find(filter).exec();
-            return clients.map((client) => {return { data: client }});
+            return clients;
+            // return clients.map((client) => {return { data: client }});
         }
     },
     Author: {

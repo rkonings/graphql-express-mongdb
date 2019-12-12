@@ -29,14 +29,20 @@ export type Client = {
   type?: Maybe<Scalars['String']>,
 };
 
-export type ClientData = {
-   __typename?: 'ClientData',
-  data?: Maybe<Client>,
+export type ClientInput = {
+  _id?: Maybe<Scalars['String']>,
+  name?: Maybe<Scalars['String']>,
+  address?: Maybe<Scalars['String']>,
+  zipcode?: Maybe<Scalars['String']>,
+  city?: Maybe<Scalars['String']>,
+  telephone?: Maybe<Scalars['String']>,
+  type?: Maybe<Scalars['String']>,
 };
 
 export type Mutation = {
    __typename?: 'Mutation',
   addClient?: Maybe<Client>,
+  updateClient?: Maybe<Client>,
   signup?: Maybe<User>,
   login?: Maybe<Token>,
   seedClients?: Maybe<Array<Maybe<Client>>>,
@@ -44,17 +50,20 @@ export type Mutation = {
 
 
 export type MutationAddClientArgs = {
-  name?: Maybe<Scalars['String']>,
-  address?: Maybe<Scalars['String']>,
-  zipcode?: Maybe<Scalars['String']>,
-  city?: Maybe<Scalars['String']>,
-  telephone?: Maybe<Scalars['String']>
+  client?: Maybe<ClientInput>
+};
+
+
+export type MutationUpdateClientArgs = {
+  client?: Maybe<ClientInput>
 };
 
 
 export type MutationSignupArgs = {
   email: Scalars['String'],
-  password: Scalars['String']
+  password: Scalars['String'],
+  firstName: Scalars['String'],
+  lastName: Scalars['String']
 };
 
 
@@ -80,7 +89,14 @@ export type Query = {
   posts?: Maybe<Array<Maybe<Post>>>,
   authors?: Maybe<Array<Maybe<Author>>>,
   users?: Maybe<Array<Maybe<User>>>,
-  clients?: Maybe<Array<Maybe<ClientData>>>,
+  user?: Maybe<User>,
+  client?: Maybe<Client>,
+  clients?: Maybe<Array<Maybe<Client>>>,
+};
+
+
+export type QueryClientArgs = {
+  _id?: Maybe<Scalars['String']>
 };
 
 
@@ -176,9 +192,9 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>,
   Author: ResolverTypeWrapper<Author>,
   User: ResolverTypeWrapper<User>,
-  ClientData: ResolverTypeWrapper<ClientData>,
   Client: ResolverTypeWrapper<Client>,
   Mutation: ResolverTypeWrapper<{}>,
+  ClientInput: ClientInput,
   Token: ResolverTypeWrapper<Token>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
@@ -191,9 +207,9 @@ export type ResolversParentTypes = {
   String: Scalars['String'],
   Author: Author,
   User: User,
-  ClientData: ClientData,
   Client: Client,
   Mutation: {},
+  ClientInput: ClientInput,
   Token: Token,
   Int: Scalars['Int'],
   Boolean: Scalars['Boolean'],
@@ -216,13 +232,10 @@ export type ClientResolvers<ContextType = any, ParentType extends ResolversParen
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
 };
 
-export type ClientDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['ClientData'] = ResolversParentTypes['ClientData']> = {
-  data?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType>,
-};
-
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationAddClientArgs>,
-  signup?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password'>>,
+  updateClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationUpdateClientArgs>,
+  signup?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'firstName' | 'lastName'>>,
   login?: Resolver<Maybe<ResolversTypes['Token']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>,
   seedClients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType, RequireFields<MutationSeedClientsArgs, 'amount'>>,
 };
@@ -237,7 +250,9 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>,
   authors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Author']>>>, ParentType, ContextType>,
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
-  clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['ClientData']>>>, ParentType, ContextType, QueryClientsArgs>,
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
+  client?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, QueryClientArgs>,
+  clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType, QueryClientsArgs>,
 };
 
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
@@ -252,7 +267,6 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>,
   Client?: ClientResolvers<ContextType>,
-  ClientData?: ClientDataResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
   Post?: PostResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
