@@ -11,9 +11,36 @@ type Post {
   author: Author
 }
 
+type Settings {
+  language: String!
+  dateFormat: String!
+  pushNotifications: Boolean!
+  unscribeEmailLink: Boolean!
+  signature: String!
+}
+
 type User {
   _id: String!
   email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  settings: Settings
+}
+
+input InputSettings {
+  language: String
+  dateFormat: String
+  pushNotifications: Boolean
+  unscribeEmailLink: Boolean
+  signature: String
+}
+
+input InputUser {
+  email: String
+  firstName: String
+  lastName: String
+  settings: InputSettings
 }
 
 type Client {
@@ -56,6 +83,8 @@ type Mutation {
   
   signup(email: String!, password: String!, firstName: String!, lastName: String!): User
   login(email: String!, password: String!): Token
+
+  updateUser(user: InputUser): User
 
   seedClients(amount: Int!): [Client]
 }

@@ -39,12 +39,28 @@ export type ClientInput = {
   type?: Maybe<Scalars['String']>,
 };
 
+export type InputSettings = {
+  language?: Maybe<Scalars['String']>,
+  dateFormat?: Maybe<Scalars['String']>,
+  pushNotifications?: Maybe<Scalars['Boolean']>,
+  unscribeEmailLink?: Maybe<Scalars['Boolean']>,
+  signature?: Maybe<Scalars['String']>,
+};
+
+export type InputUser = {
+  email?: Maybe<Scalars['String']>,
+  firstName?: Maybe<Scalars['String']>,
+  lastName?: Maybe<Scalars['String']>,
+  settings?: Maybe<InputSettings>,
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
   addClient?: Maybe<Client>,
   updateClient?: Maybe<Client>,
   signup?: Maybe<User>,
   login?: Maybe<Token>,
+  updateUser?: Maybe<User>,
   seedClients?: Maybe<Array<Maybe<Client>>>,
 };
 
@@ -70,6 +86,11 @@ export type MutationSignupArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String'],
   password: Scalars['String']
+};
+
+
+export type MutationUpdateUserArgs = {
+  user?: Maybe<InputUser>
 };
 
 
@@ -105,6 +126,15 @@ export type QueryClientsArgs = {
   city?: Maybe<Array<Maybe<Scalars['String']>>>
 };
 
+export type Settings = {
+   __typename?: 'Settings',
+  language: Scalars['String'],
+  dateFormat: Scalars['String'],
+  pushNotifications: Scalars['Boolean'],
+  unscribeEmailLink: Scalars['Boolean'],
+  signature: Scalars['String'],
+};
+
 export type Token = {
    __typename?: 'Token',
   token: Scalars['String'],
@@ -114,6 +144,10 @@ export type User = {
    __typename?: 'User',
   _id: Scalars['String'],
   email: Scalars['String'],
+  password: Scalars['String'],
+  firstName: Scalars['String'],
+  lastName: Scalars['String'],
+  settings?: Maybe<Settings>,
 };
 
 
@@ -192,12 +226,15 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>,
   Author: ResolverTypeWrapper<Author>,
   User: ResolverTypeWrapper<User>,
+  Settings: ResolverTypeWrapper<Settings>,
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Client: ResolverTypeWrapper<Client>,
   Mutation: ResolverTypeWrapper<{}>,
   ClientInput: ClientInput,
   Token: ResolverTypeWrapper<Token>,
+  InputUser: InputUser,
+  InputSettings: InputSettings,
   Int: ResolverTypeWrapper<Scalars['Int']>,
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -207,12 +244,15 @@ export type ResolversParentTypes = {
   String: Scalars['String'],
   Author: Author,
   User: User,
+  Settings: Settings,
+  Boolean: Scalars['Boolean'],
   Client: Client,
   Mutation: {},
   ClientInput: ClientInput,
   Token: Token,
+  InputUser: InputUser,
+  InputSettings: InputSettings,
   Int: Scalars['Int'],
-  Boolean: Scalars['Boolean'],
 };
 
 export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = {
@@ -237,6 +277,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationUpdateClientArgs>,
   signup?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'firstName' | 'lastName'>>,
   login?: Resolver<Maybe<ResolversTypes['Token']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>,
+  updateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, MutationUpdateUserArgs>,
   seedClients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType, RequireFields<MutationSeedClientsArgs, 'amount'>>,
 };
 
@@ -255,6 +296,14 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType, QueryClientsArgs>,
 };
 
+export type SettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Settings'] = ResolversParentTypes['Settings']> = {
+  language?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  dateFormat?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  pushNotifications?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+  unscribeEmailLink?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+  signature?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
+
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 };
@@ -262,6 +311,10 @@ export type TokenResolvers<ContextType = any, ParentType extends ResolversParent
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  settings?: Resolver<Maybe<ResolversTypes['Settings']>, ParentType, ContextType>,
 };
 
 export type Resolvers<ContextType = any> = {
@@ -270,6 +323,7 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>,
   Post?: PostResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
+  Settings?: SettingsResolvers<ContextType>,
   Token?: TokenResolvers<ContextType>,
   User?: UserResolvers<ContextType>,
 };
