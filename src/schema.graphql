@@ -72,6 +72,7 @@ type Query {
   user: User
   client(_id: String): Client
   clients(type: [String], city: [String]): [Client]
+  filter(types: [String!]!): [Filter]
 }
 
 type Token {
