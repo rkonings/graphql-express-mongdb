@@ -54,6 +54,17 @@ type Client {
   type: String
 }
 
+type FilterOption {
+  label: String!
+  value: String!
+}
+
+type Filter {
+  options: [FilterOption]!
+  id: String!
+  label: String!
+}
+
 type Query {
   posts: [Post]
   authors: [Author]
