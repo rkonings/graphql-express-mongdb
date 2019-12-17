@@ -39,6 +39,19 @@ export type ClientInput = {
   type?: Maybe<Scalars['String']>,
 };
 
+export type Filter = {
+   __typename?: 'Filter',
+  options: Array<Maybe<FilterOption>>,
+  id: Scalars['String'],
+  label: Scalars['String'],
+};
+
+export type FilterOption = {
+   __typename?: 'FilterOption',
+  label: Scalars['String'],
+  value: Scalars['String'],
+};
+
 export type InputSettings = {
   language?: Maybe<Scalars['String']>,
   dateFormat?: Maybe<Scalars['String']>,
@@ -113,6 +126,7 @@ export type Query = {
   user?: Maybe<User>,
   client?: Maybe<Client>,
   clients?: Maybe<Array<Maybe<Client>>>,
+  filter?: Maybe<Array<Maybe<Filter>>>,
 };
 
 
@@ -124,6 +138,11 @@ export type QueryClientArgs = {
 export type QueryClientsArgs = {
   type?: Maybe<Array<Maybe<Scalars['String']>>>,
   city?: Maybe<Array<Maybe<Scalars['String']>>>
+};
+
+
+export type QueryFilterArgs = {
+  types: Array<Scalars['String']>
 };
 
 export type Settings = {
@@ -229,6 +248,8 @@ export type ResolversTypes = {
   Settings: ResolverTypeWrapper<Settings>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Client: ResolverTypeWrapper<Client>,
+  Filter: ResolverTypeWrapper<Filter>,
+  FilterOption: ResolverTypeWrapper<FilterOption>,
   Mutation: ResolverTypeWrapper<{}>,
   ClientInput: ClientInput,
   Token: ResolverTypeWrapper<Token>,
@@ -247,6 +268,8 @@ export type ResolversParentTypes = {
   Settings: Settings,
   Boolean: Scalars['Boolean'],
   Client: Client,
+  Filter: Filter,
+  FilterOption: FilterOption,
   Mutation: {},
   ClientInput: ClientInput,
   Token: Token,
@@ -272,6 +295,17 @@ export type ClientResolvers<ContextType = any, ParentType extends ResolversParen
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
 };
 
+export type FilterResolvers<ContextType = any, ParentType extends ResolversParentTypes['Filter'] = ResolversParentTypes['Filter']> = {
+  options?: Resolver<Array<Maybe<ResolversTypes['FilterOption']>>, ParentType, ContextType>,
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  label?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
+
+export type FilterOptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['FilterOption'] = ResolversParentTypes['FilterOption']> = {
+  label?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationAddClientArgs>,
   updateClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationUpdateClientArgs>,
@@ -294,6 +328,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
   client?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, QueryClientArgs>,
   clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType, QueryClientsArgs>,
+  filter?: Resolver<Maybe<Array<Maybe<ResolversTypes['Filter']>>>, ParentType, ContextType, RequireFields<QueryFilterArgs, 'types'>>,
 };
 
 export type SettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Settings'] = ResolversParentTypes['Settings']> = {
@@ -320,6 +355,8 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>,
   Client?: ClientResolvers<ContextType>,
+  Filter?: FilterResolvers<ContextType>,
+  FilterOption?: FilterOptionResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
   Post?: PostResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,

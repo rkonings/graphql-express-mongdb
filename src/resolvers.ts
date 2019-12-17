@@ -5,6 +5,7 @@ import Clients from './Models/Clients';
 import auth from './Auth';
 import bcrypt from 'bcrypt';
 import faker from 'faker/locale/nl';
+import { type } from 'os';
 
 const authors: Author[] = [
     { id: 'FOOBAR', name: 'FOOBAR' },
@@ -112,6 +113,29 @@ export const resolvers: Resolvers = {
         }
     },
     Query: {
+        filter: async (_, {types}, {_id}) => {
+
+            const filters = [];
+            for(let i = 0; i < types.length; i++) {
+                if(types[i]) {
+                    const filterValues = await Clients.distinct(types[i], {user: _id});
+                    const options = filterValues.map((option): {value: string, label: string} => {
+                        return {
+                            value: option,
+                            label: option
+                        }
+                    });
+                    const filter = {
+                        id: types[i],
+                        label: types[i],
+                        options
+                    }
+                    filters.push(filter);
+                }
+            }
+
+            return filters;
+        },
         user: async (_, __, {_id}) => {
             // await delay(5000);
             return Users.findById(_id).exec();
