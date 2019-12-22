@@ -12,6 +12,15 @@ type Post {
   author: Author
 }
 
+type Activity {
+  type: String!
+  title: String!
+  user: User!
+  client: Client
+  notes: String!
+  creationDate: Date!
+}
+
 type Settings {
   language: String!
   dateFormat: String!
@@ -53,6 +62,7 @@ type Client {
   city: String!
   user: String!
   type: String
+  activities: [Activity]
 }
 
 type FilterOption {
@@ -73,6 +83,8 @@ type Query {
   user: User
   client(_id: String): Client
   clients(type: [String], city: [String]): [Client]
+  activity(_id: String): Activity
+  activities(type: [String]): [Activity] 
   filter(types: [String!]!): [Filter]
 }
 
