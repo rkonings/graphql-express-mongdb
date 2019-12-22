@@ -1,11 +1,11 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
-import { Resolvers, Post, Author, User } from './@types/graphql-resolvers';
+import { Resolvers, Post, Author, Activity, Client } from './@types/graphql-resolvers';
 import Users from './Models/Users';
 import Clients from './Models/Clients';
+import Activities from './Models/Activity'
 import auth from './Auth';
 import bcrypt from 'bcrypt';
 import faker from 'faker/locale/nl';
-import { type } from 'os';
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
 
