@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
@@ -8,6 +8,17 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
+  Date: any,
+};
+
+export type Activity = {
+   __typename?: 'Activity',
+  type: Scalars['String'],
+  title: Scalars['String'],
+  user: User,
+  client?: Maybe<Client>,
+  notes: Scalars['String'],
+  creationDate: Scalars['Date'],
 };
 
 export type Author = {
@@ -27,6 +38,7 @@ export type Client = {
   city: Scalars['String'],
   user: Scalars['String'],
   type?: Maybe<Scalars['String']>,
+  activities?: Maybe<Array<Maybe<Activity>>>,
 };
 
 export type ClientInput = {
@@ -38,6 +50,7 @@ export type ClientInput = {
   telephone?: Maybe<Scalars['String']>,
   type?: Maybe<Scalars['String']>,
 };
+
 
 export type Filter = {
    __typename?: 'Filter',
@@ -126,6 +139,8 @@ export type Query = {
   user?: Maybe<User>,
   client?: Maybe<Client>,
   clients?: Maybe<Array<Maybe<Client>>>,
+  activity?: Maybe<Activity>,
+  activities?: Maybe<Array<Maybe<Activity>>>,
   filter?: Maybe<Array<Maybe<Filter>>>,
 };
 
@@ -138,6 +153,16 @@ export type QueryClientArgs = {
 export type QueryClientsArgs = {
   type?: Maybe<Array<Maybe<Scalars['String']>>>,
   city?: Maybe<Array<Maybe<Scalars['String']>>>
+};
+
+
+export type QueryActivityArgs = {
+  _id?: Maybe<Scalars['String']>
+};
+
+
+export type QueryActivitiesArgs = {
+  type?: Maybe<Array<Maybe<Scalars['String']>>>
 };
 
 
@@ -248,6 +273,8 @@ export type ResolversTypes = {
   Settings: ResolverTypeWrapper<Settings>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Client: ResolverTypeWrapper<Client>,
+  Activity: ResolverTypeWrapper<Activity>,
+  Date: ResolverTypeWrapper<Scalars['Date']>,
   Filter: ResolverTypeWrapper<Filter>,
   FilterOption: ResolverTypeWrapper<FilterOption>,
   Mutation: ResolverTypeWrapper<{}>,
@@ -268,6 +295,8 @@ export type ResolversParentTypes = {
   Settings: Settings,
   Boolean: Scalars['Boolean'],
   Client: Client,
+  Activity: Activity,
+  Date: Scalars['Date'],
   Filter: Filter,
   FilterOption: FilterOption,
   Mutation: {},
@@ -276,6 +305,15 @@ export type ResolversParentTypes = {
   InputUser: InputUser,
   InputSettings: InputSettings,
   Int: Scalars['Int'],
+};
+
+export type ActivityResolvers<ContextType = any, ParentType extends ResolversParentTypes['Activity'] = ResolversParentTypes['Activity']> = {
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
+  client?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType>,
+  notes?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
 };
 
 export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = {
@@ -293,7 +331,12 @@ export type ClientResolvers<ContextType = any, ParentType extends ResolversParen
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   user?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  activities?: Resolver<Maybe<Array<Maybe<ResolversTypes['Activity']>>>, ParentType, ContextType>,
 };
+
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date'
+}
 
 export type FilterResolvers<ContextType = any, ParentType extends ResolversParentTypes['Filter'] = ResolversParentTypes['Filter']> = {
   options?: Resolver<Array<Maybe<ResolversTypes['FilterOption']>>, ParentType, ContextType>,
@@ -328,6 +371,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
   client?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, QueryClientArgs>,
   clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType, QueryClientsArgs>,
+  activity?: Resolver<Maybe<ResolversTypes['Activity']>, ParentType, ContextType, QueryActivityArgs>,
+  activities?: Resolver<Maybe<Array<Maybe<ResolversTypes['Activity']>>>, ParentType, ContextType, QueryActivitiesArgs>,
   filter?: Resolver<Maybe<Array<Maybe<ResolversTypes['Filter']>>>, ParentType, ContextType, RequireFields<QueryFilterArgs, 'types'>>,
 };
 
@@ -353,8 +398,10 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type Resolvers<ContextType = any> = {
+  Activity?: ActivityResolvers<ContextType>,
   Author?: AuthorResolvers<ContextType>,
   Client?: ClientResolvers<ContextType>,
+  Date?: GraphQLScalarType,
   Filter?: FilterResolvers<ContextType>,
   FilterOption?: FilterOptionResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
