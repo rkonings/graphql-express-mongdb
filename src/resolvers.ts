@@ -141,8 +141,8 @@ export const resolvers: Resolvers = {
             return Users.findById(_id).exec();
         },
         client: async (_, {_id}, {_id: user}) => {
-            console.log(_id);
-            return Clients.findOne({_id, user}).exec();
+            if (!user) throw new AuthenticationError('you must be logged in'); 
+            return await Clients.findOne({user, _id}).populate('activities').exec();
         },
         posts: () => {
             return posts;
