@@ -40,6 +40,41 @@ const Cities = [
     'Amersfoort'
 ];
 
+const ActivitiesTypes = ['task', 'call'];
+
+const dummpyClient = async (userId: string) => {
+    const client = new Clients({
+        name: faker.company.companyName(),
+        address: faker.address.streetAddress(true),
+        zipcode: faker.address.zipCode(),
+        city: Cities[Math.floor(Math.random() * Cities.length)],
+        telephone: faker.phone.phoneNumber(),
+        user: userId,
+        type: ClientTypes[Math.floor(Math.random() * ClientTypes.length)]
+    });
+
+    const clientResult = await client.save();
+
+    const activities: Activity[] = [];
+
+    for(let i = 0; i < faker.random.number({min:1, max: 15}); i++) {
+        const activitiy = new Activities({
+            user: userId,
+            client: clientResult,
+            type: ActivitiesTypes[Math.floor(Math.random() * ActivitiesTypes.length)]
+        });
+        activitiy.notes = faker.lorem.lines(faker.random.number({min:1, max: 10}));
+        activitiy.title = faker.lorem.words(faker.random.number({min: 2, max: 6}));
+        activitiy.creationDate = faker.date.between('2019-01-01', '2019-12-31');
+        await activitiy.save();
+        activities.push(activitiy)
+    }
+    
+    clientResult.activities = activities;
+    await clientResult.save();
+    return clientResult;
+}
+
 interface ClientFilter {
     type?: Array<null|string> | null;
     city?: Array<null|string> | null;
