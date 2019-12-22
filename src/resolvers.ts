@@ -6,6 +6,8 @@ import auth from './Auth';
 import bcrypt from 'bcrypt';
 import faker from 'faker/locale/nl';
 import { type } from 'os';
+import { GraphQLScalarType } from 'graphql';
+import { Kind } from 'graphql/language';
 
 const authors: Author[] = [
     { id: 'FOOBAR', name: 'FOOBAR' },
