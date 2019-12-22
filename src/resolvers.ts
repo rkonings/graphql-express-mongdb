@@ -148,21 +148,13 @@ export const resolvers: Resolvers = {
         },
         seedClients: async (_, {amount}, {_id}) => {
 
-            const data = [];
+            const result: Client[] = [];
             for(let i = 0; i < amount; i++) {
-                data.push({
-                    name: faker.company.companyName(),
-                    address: faker.address.streetAddress(),
-                    zipcode: faker.address.zipCode(),
-                    city: Cities[Math.floor(Math.random() * Cities.length)],
-                    telephone: faker.phone.phoneNumber(),
-                    user: _id,
-                    type: ClientTypes[Math.floor(Math.random() * ClientTypes.length)]
-                });
+                const client = await dummpyClient(_id);
+                result.push(client);
             }
 
-            const clients = await Clients.insertMany(data);
-            return clients;
+            return result;
         }
     },
     Query: {
