@@ -21,6 +21,8 @@ const clientSchema = new Schema({
     city: String,
     type: String,
     user: {type: mongoose.Schema.Types.ObjectId,ref:'User'}
+    user: {type: mongoose.Schema.Types.ObjectId,ref:'User'},
+    activities: [{type: mongoose.Schema.Types.ObjectId,ref:'Activity'}]
 });
 
 const Client = mongoose.model<ClientModel & Document>('Client', clientSchema);
