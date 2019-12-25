@@ -13,12 +13,22 @@ export type Scalars = {
 
 export type Activity = {
    __typename?: 'Activity',
+  _id: Scalars['String'],
   type: Scalars['String'],
   title: Scalars['String'],
   user: User,
-  client?: Maybe<Client>,
+  client: Scalars['String'],
   notes: Scalars['String'],
   creationDate: Scalars['Date'],
+};
+
+export type ActivityInput = {
+  _id?: Maybe<Scalars['String']>,
+  title: Scalars['String'],
+  notes?: Maybe<Scalars['String']>,
+  type: Scalars['String'],
+  client: Scalars['String'],
+  creationDate?: Maybe<Scalars['Date']>,
 };
 
 export type Author = {
@@ -84,6 +94,7 @@ export type Mutation = {
    __typename?: 'Mutation',
   addClient?: Maybe<Client>,
   updateClient?: Maybe<Client>,
+  addActivity?: Maybe<Activity>,
   signup?: Maybe<User>,
   login?: Maybe<Token>,
   updateUser?: Maybe<User>,
@@ -98,6 +109,11 @@ export type MutationAddClientArgs = {
 
 export type MutationUpdateClientArgs = {
   client?: Maybe<ClientInput>
+};
+
+
+export type MutationAddActivityArgs = {
+  activity?: Maybe<ActivityInput>
 };
 
 
@@ -279,6 +295,7 @@ export type ResolversTypes = {
   FilterOption: ResolverTypeWrapper<FilterOption>,
   Mutation: ResolverTypeWrapper<{}>,
   ClientInput: ClientInput,
+  ActivityInput: ActivityInput,
   Token: ResolverTypeWrapper<Token>,
   InputUser: InputUser,
   InputSettings: InputSettings,
@@ -301,6 +318,7 @@ export type ResolversParentTypes = {
   FilterOption: FilterOption,
   Mutation: {},
   ClientInput: ClientInput,
+  ActivityInput: ActivityInput,
   Token: Token,
   InputUser: InputUser,
   InputSettings: InputSettings,
@@ -308,10 +326,11 @@ export type ResolversParentTypes = {
 };
 
 export type ActivityResolvers<ContextType = any, ParentType extends ResolversParentTypes['Activity'] = ResolversParentTypes['Activity']> = {
+  _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
-  client?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType>,
+  client?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   notes?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
 };
@@ -352,6 +371,7 @@ export type FilterOptionResolvers<ContextType = any, ParentType extends Resolver
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationAddClientArgs>,
   updateClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationUpdateClientArgs>,
+  addActivity?: Resolver<Maybe<ResolversTypes['Activity']>, ParentType, ContextType, MutationAddActivityArgs>,
   signup?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'firstName' | 'lastName'>>,
   login?: Resolver<Maybe<ResolversTypes['Token']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>,
   updateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, MutationUpdateUserArgs>,
