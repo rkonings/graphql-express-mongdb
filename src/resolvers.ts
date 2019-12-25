@@ -1,11 +1,13 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
-import { Resolvers, Post, Author, User } from './@types/graphql-resolvers';
+import { Resolvers, Post, Author, Activity, Client } from './@types/graphql-resolvers';
 import Users from './Models/Users';
 import Clients from './Models/Clients';
+import Activities from './Models/Activity'
 import auth from './Auth';
 import bcrypt from 'bcrypt';
 import faker from 'faker/locale/nl';
-import { type } from 'os';
+import { GraphQLScalarType } from 'graphql';
+import { Kind } from 'graphql/language';
 
 const authors: Author[] = [
     { id: 'FOOBAR', name: 'FOOBAR' },
@@ -38,6 +40,41 @@ const Cities = [
     'Amersfoort'
 ];
 
+const ActivitiesTypes = ['task', 'call'];
+
+const dummpyClient = async (userId: string) => {
+    const client = new Clients({
+        name: faker.company.companyName(),
+        address: faker.address.streetAddress(true),
+        zipcode: faker.address.zipCode(),
+        city: Cities[Math.floor(Math.random() * Cities.length)],
+        telephone: faker.phone.phoneNumber(),
+        user: userId,
+        type: ClientTypes[Math.floor(Math.random() * ClientTypes.length)]
+    });
+
+    const clientResult = await client.save();
+
+    const activities: Activity[] = [];
+
+    for(let i = 0; i < faker.random.number({min:1, max: 15}); i++) {
+        const activitiy = new Activities({
+            user: userId,
+            client: clientResult,
+            type: ActivitiesTypes[Math.floor(Math.random() * ActivitiesTypes.length)]
+        });
+        activitiy.notes = faker.lorem.lines(faker.random.number({min:1, max: 10}));
+        activitiy.title = faker.lorem.words(faker.random.number({min: 2, max: 6}));
+        activitiy.creationDate = faker.date.between('2019-01-01', '2019-12-31');
+        await activitiy.save();
+        activities.push(activitiy)
+    }
+    
+    clientResult.activities = activities;
+    await clientResult.save();
+    return clientResult;
+}
+
 interface ClientFilter {
     type?: Array<null|string> | null;
     city?: Array<null|string> | null;
@@ -49,11 +86,40 @@ const delay = async (ms: number) => {
 }
 
 export const resolvers: Resolvers = {
+    Date: new GraphQLScalarType({
+        name: 'Date',
+        description: 'Date custom scalar type',
+        parseValue(value) {
+          return new Date(value); // value from the client
+        },
+        serialize(value) {
+          return value.getTime(); // value sent to the client
+        },
+        parseLiteral(ast) {
+          if (ast.kind === Kind.INT) {
+            return new Date(ast.value) // ast value is always in string format
+          }
+          return null;
+        },
+      }),
     Mutation: {
         addClient: async (_, {client}, {_id}) => {
             if (!_id) throw new AuthenticationError('you must be logged in'); 
             const result = await Clients.create({...client,user: _id});
             return result;
+        },
+        addActivity: async (_, {activity: data}, {_id}) => {
+            if (!_id) throw new AuthenticationError('you must be logged in'); 
+            if(!data || !data.client) throw new UserInputError('no client id'); 
+            const client = await Clients.findById(data.client);
+            if(!client)throw new UserInputError('no client found'); 
+            
+            const activity = new Activities({...data,user: _id});
+            client.activities?.push(activity);
+            await activity.save();
+            await client.save();
+        
+            return activity;
         },
         login: async (_, {email, password}) => {
             const token = await auth(email, password, 'secret!');
@@ -95,21 +161,13 @@ export const resolvers: Resolvers = {
         },
         seedClients: async (_, {amount}, {_id}) => {
 
-            const data = [];
+            const result: Client[] = [];
             for(let i = 0; i < amount; i++) {
-                data.push({
-                    name: faker.company.companyName(),
-                    address: faker.address.streetAddress(),
-                    zipcode: faker.address.zipCode(),
-                    city: Cities[Math.floor(Math.random() * Cities.length)],
-                    telephone: faker.phone.phoneNumber(),
-                    user: _id,
-                    type: ClientTypes[Math.floor(Math.random() * ClientTypes.length)]
-                });
+                const client = await dummpyClient(_id);
+                result.push(client);
             }
 
-            const clients = await Clients.insertMany(data);
-            return clients;
+            return result;
         }
     },
     Query: {
@@ -141,8 +199,8 @@ export const resolvers: Resolvers = {
             return Users.findById(_id).exec();
         },
         client: async (_, {_id}, {_id: user}) => {
-            console.log(_id);
-            return Clients.findOne({_id, user}).exec();
+            if (!user) throw new AuthenticationError('you must be logged in'); 
+            return await Clients.findOne({user, _id}).populate({path: 'activities', options: { sort: {creationDate: -1} }}).exec();
         },
         posts: () => {
             return posts;

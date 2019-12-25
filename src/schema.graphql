@@ -1,3 +1,4 @@
+scalar Date
 
 type Author {
   name: String!
@@ -9,6 +10,16 @@ type Post {
   id: String!
   title: String!
   author: Author
+}
+
+type Activity {
+  _id: String!
+  type: String!
+  title: String!
+  user: User!
+  client: String!
+  notes: String!
+  creationDate: Date!
 }
 
 type Settings {
@@ -52,6 +63,7 @@ type Client {
   city: String!
   user: String!
   type: String
+  activities: [Activity]
 }
 
 type FilterOption {
@@ -72,6 +84,8 @@ type Query {
   user: User
   client(_id: String): Client
   clients(type: [String], city: [String]): [Client]
+  activity(_id: String): Activity
+  activities(type: [String]): [Activity] 
   filter(types: [String!]!): [Filter]
 }
 
@@ -89,9 +103,20 @@ input ClientInput {
   type: String
 }
 
+input ActivityInput {
+  _id: String
+  title: String!
+  notes: String
+  type: String!
+  client: String!
+  creationDate: Date
+}
+
 type Mutation {
   addClient(client: ClientInput): Client
   updateClient(client: ClientInput): Client
+
+  addActivity(activity: ActivityInput): Activity
   
   signup(email: String!, password: String!, firstName: String!, lastName: String!): User
   login(email: String!, password: String!): Token
