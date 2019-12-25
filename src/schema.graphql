@@ -13,10 +13,11 @@ type Post {
 }
 
 type Activity {
+  _id: String!
   type: String!
   title: String!
   user: User!
-  client: Client
+  client: String!
   notes: String!
   creationDate: Date!
 }
@@ -100,6 +101,15 @@ input ClientInput {
   city: String
   telephone: String
   type: String
+}
+
+input ActivityInput {
+  _id: String
+  title: String!
+  notes: String
+  type: String!
+  client: String!
+  creationDate: Date
 }
 
 type Mutation {
