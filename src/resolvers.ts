@@ -108,6 +108,19 @@ export const resolvers: Resolvers = {
             const result = await Clients.create({...client,user: _id});
             return result;
         },
+        addActivity: async (_, {activity: data}, {_id}) => {
+            if (!_id) throw new AuthenticationError('you must be logged in'); 
+            if(!data || !data.client) throw new UserInputError('no client id'); 
+            const client = await Clients.findById(data.client);
+            if(!client)throw new UserInputError('no client found'); 
+            
+            const activity = new Activities({...data,user: _id});
+            client.activities?.push(activity);
+            await activity.save();
+            await client.save();
+        
+            return activity;
+        },
         login: async (_, {email, password}) => {
             const token = await auth(email, password, 'secret!');
             return {token};
