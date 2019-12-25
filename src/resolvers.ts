@@ -187,7 +187,7 @@ export const resolvers: Resolvers = {
         },
         client: async (_, {_id}, {_id: user}) => {
             if (!user) throw new AuthenticationError('you must be logged in'); 
-            return await Clients.findOne({user, _id}).populate('activities').exec();
+            return await Clients.findOne({user, _id}).populate({path: 'activities', options: { sort: {creationDate: -1} }}).exec();
         },
         posts: () => {
             return posts;
