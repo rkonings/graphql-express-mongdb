@@ -122,6 +122,16 @@ export const resolvers: Resolvers = {
         
             return activity;
         },
+        updateActivity: async (_, {activity}, {_id}) => {
+            if(activity && !activity._id) throw new UserInputError('No _id fount'); 
+
+            const result = await Activities.findOne({_id: activity?._id, user: _id});
+            if (result){
+                result.set(activity);
+                result.save();
+            }
+            return result;
+        },
         login: async (_, {email, password}) => {
             const token = await auth(email, password, 'secret!');
             return {token};
