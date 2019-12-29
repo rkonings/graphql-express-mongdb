@@ -108,7 +108,7 @@ input ActivityInput {
   title: String!
   notes: String
   type: String!
-  client: String!
+  client: String
   creationDate: Date
 }
 
