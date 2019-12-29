@@ -117,6 +117,7 @@ type Mutation {
   updateClient(client: ClientInput): Client
 
   addActivity(activity: ActivityInput): Activity
+  updateActivity(activity: ActivityInput): Activity
   
   signup(email: String!, password: String!, firstName: String!, lastName: String!): User
   login(email: String!, password: String!): Token
