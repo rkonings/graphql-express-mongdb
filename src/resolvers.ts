@@ -88,12 +88,13 @@ const delay = async (ms: number) => {
 export const resolvers: Resolvers = {
     Date: new GraphQLScalarType({
         name: 'Date',
-        description: 'Date custom scalar type',
+        description: 'Date scalar type',
         parseValue(value) {
           return new Date(value); // value from the client
         },
         serialize(value) {
-          return value.getTime(); // value sent to the client
+        //   return value.getTime(); // value sent to the client
+            return new Date(value);
         },
         parseLiteral(ast) {
           if (ast.kind === Kind.INT) {
