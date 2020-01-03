@@ -20,6 +20,7 @@ type Activity {
   client: String!
   notes: String!
   creationDate: Date!
+  dueDate: Date
 }
 
 type Settings {
@@ -103,21 +104,32 @@ input ClientInput {
   type: String
 }
 
-input ActivityInput {
+input CreateActivityInput {
   _id: String
   title: String!
   notes: String
   type: String!
   client: String
   creationDate: Date
+  dueDate: Date
+}
+
+input UpdateActivityInput {
+  _id: String!
+  title: String
+  notes: String
+  type: String
+  client: String
+  creationDate: Date
+  dueDate: Date
 }
 
 type Mutation {
   addClient(client: ClientInput): Client
   updateClient(client: ClientInput): Client
 
-  addActivity(activity: ActivityInput): Activity
-  updateActivity(activity: ActivityInput): Activity
+  addActivity(activity: CreateActivityInput): Activity
+  updateActivity(activity: UpdateActivityInput): Activity
   
   signup(email: String!, password: String!, firstName: String!, lastName: String!): User
   login(email: String!, password: String!): Token
