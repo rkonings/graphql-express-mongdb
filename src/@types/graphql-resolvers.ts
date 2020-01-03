@@ -20,15 +20,7 @@ export type Activity = {
   client: Scalars['String'],
   notes: Scalars['String'],
   creationDate: Scalars['Date'],
-};
-
-export type ActivityInput = {
-  _id?: Maybe<Scalars['String']>,
-  title: Scalars['String'],
-  notes?: Maybe<Scalars['String']>,
-  type: Scalars['String'],
-  client?: Maybe<Scalars['String']>,
-  creationDate?: Maybe<Scalars['Date']>,
+  dueDate?: Maybe<Scalars['Date']>,
 };
 
 export type Author = {
@@ -59,6 +51,16 @@ export type ClientInput = {
   city?: Maybe<Scalars['String']>,
   telephone?: Maybe<Scalars['String']>,
   type?: Maybe<Scalars['String']>,
+};
+
+export type CreateActivityInput = {
+  _id?: Maybe<Scalars['String']>,
+  title: Scalars['String'],
+  notes?: Maybe<Scalars['String']>,
+  type: Scalars['String'],
+  client?: Maybe<Scalars['String']>,
+  creationDate?: Maybe<Scalars['Date']>,
+  dueDate?: Maybe<Scalars['Date']>,
 };
 
 
@@ -114,12 +116,12 @@ export type MutationUpdateClientArgs = {
 
 
 export type MutationAddActivityArgs = {
-  activity?: Maybe<ActivityInput>
+  activity?: Maybe<CreateActivityInput>
 };
 
 
 export type MutationUpdateActivityArgs = {
-  activity?: Maybe<ActivityInput>
+  activity?: Maybe<UpdateActivityInput>
 };
 
 
@@ -204,6 +206,16 @@ export type Settings = {
 export type Token = {
    __typename?: 'Token',
   token: Scalars['String'],
+};
+
+export type UpdateActivityInput = {
+  _id: Scalars['String'],
+  title?: Maybe<Scalars['String']>,
+  notes?: Maybe<Scalars['String']>,
+  type?: Maybe<Scalars['String']>,
+  client?: Maybe<Scalars['String']>,
+  creationDate?: Maybe<Scalars['Date']>,
+  dueDate?: Maybe<Scalars['Date']>,
 };
 
 export type User = {
@@ -301,7 +313,8 @@ export type ResolversTypes = {
   FilterOption: ResolverTypeWrapper<FilterOption>,
   Mutation: ResolverTypeWrapper<{}>,
   ClientInput: ClientInput,
-  ActivityInput: ActivityInput,
+  CreateActivityInput: CreateActivityInput,
+  UpdateActivityInput: UpdateActivityInput,
   Token: ResolverTypeWrapper<Token>,
   InputUser: InputUser,
   InputSettings: InputSettings,
@@ -324,7 +337,8 @@ export type ResolversParentTypes = {
   FilterOption: FilterOption,
   Mutation: {},
   ClientInput: ClientInput,
-  ActivityInput: ActivityInput,
+  CreateActivityInput: CreateActivityInput,
+  UpdateActivityInput: UpdateActivityInput,
   Token: Token,
   InputUser: InputUser,
   InputSettings: InputSettings,
@@ -339,6 +353,7 @@ export type ActivityResolvers<ContextType = any, ParentType extends ResolversPar
   client?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   notes?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   creationDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
+  dueDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
 };
 
 export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = {

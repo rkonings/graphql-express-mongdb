@@ -9,7 +9,8 @@ const activitySchema = new Schema({
     creationDate: { type: Date, default: Date.now },
     type: String,
     user: {type: mongoose.Schema.Types.ObjectId,ref:'User'},
-    client: {type: mongoose.Schema.Types.ObjectId,ref:'Client'}
+    client: {type: mongoose.Schema.Types.ObjectId,ref:'Client'},
+    dueDate: Date
 });
 
 const Activity = mongoose.model<Activity & Document>('Activity', activitySchema);
