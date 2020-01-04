@@ -9,7 +9,7 @@ module.exports = {
               "typescript-resolvers",
           ],
       },
-      "./src/hooks.tsx": {
+      "../react-app/src/modules/hooks.tsx": {
         "documents": "./src/Modules/*/*/*.ts",
         "plugins": [
             { add: '/* tslint:disable */' },
