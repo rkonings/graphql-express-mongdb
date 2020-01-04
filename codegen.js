@@ -12,6 +12,7 @@ module.exports = {
       "./src/hooks.tsx": {
         "documents": "./src/Modules/*/*/*.ts",
         "plugins": [
+            { add: '/* tslint:disable */' },
             "typescript",
             "typescript-operations",
             "typescript-react-apollo",
