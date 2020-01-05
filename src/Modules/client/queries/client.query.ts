@@ -5,6 +5,7 @@ export default gql`
     query GET_CLIENT($_id: String) {
         client(_id: $_id) {
             ...Client
+        }
     }
     ${Client}
 

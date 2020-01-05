@@ -11,7 +11,9 @@ export default gql`
         type
         activities {
             ...Activity
+        }
     }
 
     ${Activity}
+
 `;
