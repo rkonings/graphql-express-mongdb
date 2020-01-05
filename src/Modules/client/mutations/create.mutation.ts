@@ -3,7 +3,7 @@ import { Client } from '../fragments';
 
 export default gql`
     mutation CREATE_CLIENT($client: ClientInput) {
-        createClient(client: $client) {
+        addClient(client: $client) {
             ...Client
         }
     }
