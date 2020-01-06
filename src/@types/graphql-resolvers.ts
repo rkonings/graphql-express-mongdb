@@ -39,8 +39,8 @@ export type Client = {
   telephone: Scalars['String'],
   city: Scalars['String'],
   user: Scalars['String'],
-  type?: Maybe<Scalars['String']>,
-  activities?: Maybe<Array<Maybe<Activity>>>,
+  type: Scalars['String'],
+  activities: Array<Maybe<Activity>>,
 };
 
 export type ClientInput = {
@@ -162,7 +162,7 @@ export type Query = {
   users?: Maybe<Array<Maybe<User>>>,
   user?: Maybe<User>,
   client?: Maybe<Client>,
-  clients?: Maybe<Array<Maybe<Client>>>,
+  clients: Array<Client>,
   activity?: Maybe<Activity>,
   activities?: Maybe<Array<Maybe<Activity>>>,
   filter?: Maybe<Array<Maybe<Filter>>>,
@@ -370,8 +370,8 @@ export type ClientResolvers<ContextType = any, ParentType extends ResolversParen
   telephone?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   user?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  activities?: Resolver<Maybe<Array<Maybe<ResolversTypes['Activity']>>>, ParentType, ContextType>,
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  activities?: Resolver<Array<Maybe<ResolversTypes['Activity']>>, ParentType, ContextType>,
 };
 
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
@@ -412,7 +412,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
   client?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, QueryClientArgs>,
-  clients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType, QueryClientsArgs>,
+  clients?: Resolver<Array<ResolversTypes['Client']>, ParentType, ContextType, QueryClientsArgs>,
   activity?: Resolver<Maybe<ResolversTypes['Activity']>, ParentType, ContextType, QueryActivityArgs>,
   activities?: Resolver<Maybe<Array<Maybe<ResolversTypes['Activity']>>>, ParentType, ContextType, QueryActivitiesArgs>,
   filter?: Resolver<Maybe<Array<Maybe<ResolversTypes['Filter']>>>, ParentType, ContextType, RequireFields<QueryFilterArgs, 'types'>>,
