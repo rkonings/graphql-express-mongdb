@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-import { Activity } from '../../activity/fragments';
 export default gql`
     fragment Client on Client {
         _id
@@ -9,11 +8,6 @@ export default gql`
         city
         zipcode
         type
-        activities {
-            ...Activity
-        }
     }
-
-    ${Activity}
 
 `;
