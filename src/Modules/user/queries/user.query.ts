@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import { User } from '../fragments';
 
 export default gql`
-    query USER {
+    query User {
         user {
             ...User
         }
