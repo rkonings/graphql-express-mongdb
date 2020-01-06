@@ -1,7 +1,7 @@
-import ggl from 'graphql-tag';
+import gql from 'graphql-tag';
 import { Activity } from '../fragments';
 
-export default ggl`
+export default gql`
     mutation updateActivity($activity: UpdateActivityInput) {
         updateActivity(activity: $activity) {
            ...Activity
