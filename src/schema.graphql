@@ -63,8 +63,8 @@ type Client {
   telephone: String!
   city: String!
   user: String!
-  type: String
-  activities: [Activity]
+  type: String!
+  activities: [Activity]!
 }
 
 type FilterOption {
@@ -84,7 +84,7 @@ type Query {
   users: [User]
   user: User
   client(_id: String): Client
-  clients(type: [String], city: [String]): [Client]
+  clients(type: [String], city: [String]): [Client!]!
   activity(_id: String): Activity
   activities(type: [String]): [Activity] 
   filter(types: [String!]!): [Filter]
