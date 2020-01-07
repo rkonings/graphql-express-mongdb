@@ -40,7 +40,7 @@ export type Client = {
   city: Scalars['String'],
   user: Scalars['String'],
   type: Scalars['String'],
-  activities: Array<Maybe<Activity>>,
+  activities: Array<Activity>,
 };
 
 export type ClientInput = {
@@ -66,7 +66,7 @@ export type CreateActivityInput = {
 
 export type Filter = {
    __typename?: 'Filter',
-  options: Array<Maybe<FilterOption>>,
+  options: Array<FilterOption>,
   id: Scalars['String'],
   label: Scalars['String'],
 };
@@ -166,12 +166,12 @@ export type Query = {
   posts?: Maybe<Array<Maybe<Post>>>,
   authors?: Maybe<Array<Maybe<Author>>>,
   users?: Maybe<Array<Maybe<User>>>,
-  user?: Maybe<User>,
-  client?: Maybe<Client>,
+  user: User,
+  client: Client,
   clients: Array<Client>,
-  activity?: Maybe<Activity>,
+  activity: Activity,
   activities?: Maybe<Array<Maybe<Activity>>>,
-  filter?: Maybe<Array<Maybe<Filter>>>,
+  filter: Array<Filter>,
 };
 
 
@@ -231,7 +231,7 @@ export type User = {
   password: Scalars['String'],
   firstName: Scalars['String'],
   lastName: Scalars['String'],
-  settings?: Maybe<Settings>,
+  settings: Settings,
 };
 
 
@@ -377,7 +377,7 @@ export type ClientResolvers<ContextType = any, ParentType extends ResolversParen
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   user?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  activities?: Resolver<Array<Maybe<ResolversTypes['Activity']>>, ParentType, ContextType>,
+  activities?: Resolver<Array<ResolversTypes['Activity']>, ParentType, ContextType>,
 };
 
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
@@ -385,7 +385,7 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type FilterResolvers<ContextType = any, ParentType extends ResolversParentTypes['Filter'] = ResolversParentTypes['Filter']> = {
-  options?: Resolver<Array<Maybe<ResolversTypes['FilterOption']>>, ParentType, ContextType>,
+  options?: Resolver<Array<ResolversTypes['FilterOption']>, ParentType, ContextType>,
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   label?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 };
@@ -417,12 +417,12 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>,
   authors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Author']>>>, ParentType, ContextType>,
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
-  client?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, QueryClientArgs>,
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
+  client?: Resolver<ResolversTypes['Client'], ParentType, ContextType, QueryClientArgs>,
   clients?: Resolver<Array<ResolversTypes['Client']>, ParentType, ContextType, QueryClientsArgs>,
-  activity?: Resolver<Maybe<ResolversTypes['Activity']>, ParentType, ContextType, QueryActivityArgs>,
+  activity?: Resolver<ResolversTypes['Activity'], ParentType, ContextType, QueryActivityArgs>,
   activities?: Resolver<Maybe<Array<Maybe<ResolversTypes['Activity']>>>, ParentType, ContextType, QueryActivitiesArgs>,
-  filter?: Resolver<Maybe<Array<Maybe<ResolversTypes['Filter']>>>, ParentType, ContextType, RequireFields<QueryFilterArgs, 'types'>>,
+  filter?: Resolver<Array<ResolversTypes['Filter']>, ParentType, ContextType, RequireFields<QueryFilterArgs, 'types'>>,
 };
 
 export type SettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Settings'] = ResolversParentTypes['Settings']> = {
@@ -443,7 +443,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  settings?: Resolver<Maybe<ResolversTypes['Settings']>, ParentType, ContextType>,
+  settings?: Resolver<ResolversTypes['Settings'], ParentType, ContextType>,
 };
 
 export type Resolvers<ContextType = any> = {

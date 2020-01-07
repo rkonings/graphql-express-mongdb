@@ -216,11 +216,15 @@ export const resolvers: Resolvers = {
         },
         user: async (_, __, {_id}) => {
             // await delay(5000);
-            return Users.findById(_id).exec();
+            const user = await Users.findById(_id).exec();
+            if(!user) throw new ApolloError('No user found');
+            return user;
         },
         client: async (_, {_id}, {_id: user}) => {
             if (!user) throw new AuthenticationError('you must be logged in'); 
-            return await Clients.findOne({user, _id}).populate({path: 'activities', options: { sort: {creationDate: -1} }}).exec();
+            const client = await Clients.findOne({user, _id}).populate({path: 'activities', options: { sort: {creationDate: -1} }}).exec();
+            if(!client) throw new ApolloError('No client found');
+            return client;
         },
         posts: () => {
             return posts;
