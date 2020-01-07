@@ -96,6 +96,7 @@ export type Mutation = {
    __typename?: 'Mutation',
   addClient?: Maybe<Client>,
   updateClient?: Maybe<Client>,
+  deleteClient: Client,
   addActivity?: Maybe<Activity>,
   updateActivity?: Maybe<Activity>,
   signup?: Maybe<User>,
@@ -112,6 +113,11 @@ export type MutationAddClientArgs = {
 
 export type MutationUpdateClientArgs = {
   client?: Maybe<ClientInput>
+};
+
+
+export type MutationDeleteClientArgs = {
+  _id: Scalars['String']
 };
 
 
@@ -392,6 +398,7 @@ export type FilterOptionResolvers<ContextType = any, ParentType extends Resolver
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationAddClientArgs>,
   updateClient?: Resolver<Maybe<ResolversTypes['Client']>, ParentType, ContextType, MutationUpdateClientArgs>,
+  deleteClient?: Resolver<ResolversTypes['Client'], ParentType, ContextType, RequireFields<MutationDeleteClientArgs, '_id'>>,
   addActivity?: Resolver<Maybe<ResolversTypes['Activity']>, ParentType, ContextType, MutationAddActivityArgs>,
   updateActivity?: Resolver<Maybe<ResolversTypes['Activity']>, ParentType, ContextType, MutationUpdateActivityArgs>,
   signup?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'firstName' | 'lastName'>>,
