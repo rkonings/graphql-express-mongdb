@@ -1,3 +1,4 @@
+import { User } from './../@types/graphql-resolvers';
 import mongoose from 'mongoose';
 import { Schema, Document } from 'mongoose';
 
@@ -34,7 +35,7 @@ const userSchema = new Schema({
   
 });
 
-const User = mongoose.model<UserModel & Document>('User', userSchema); 
+const User = mongoose.model<User & Document>('User', userSchema); 
 
 // const users = [
 //     {
