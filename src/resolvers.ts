@@ -1,4 +1,4 @@
-import { AuthenticationError, UserInputError } from 'apollo-server-express';
+import { AuthenticationError, UserInputError, ApolloError } from 'apollo-server-express';
 import { Resolvers, Post, Author, Activity, Client } from './@types/graphql-resolvers';
 import Users from './Models/Users';
 import Clients from './Models/Clients';
@@ -108,6 +108,15 @@ export const resolvers: Resolvers = {
             if (!_id) throw new AuthenticationError('you must be logged in'); 
             const result = await Clients.create({...client,user: _id});
             return result;
+        },
+        deleteClient: async (_, {_id}, {_id: userId}) => {
+            if (!userId) throw new AuthenticationError('you must be logged in'); 
+            if(!_id) throw new UserInputError('no client id'); 
+            const client = await Clients.findOneAndDelete({_id, user: userId}).exec();
+            if(!client){
+                throw new ApolloError('client not found and deleted');
+            } 
+            return client;
         },
         addActivity: async (_, {activity: data}, {_id}) => {
             if (!_id) throw new AuthenticationError('you must be logged in'); 
