@@ -127,6 +127,7 @@ input UpdateActivityInput {
 type Mutation {
   addClient(client: ClientInput): Client
   updateClient(client: ClientInput): Client
+  deleteClient(_id: String!): Client!
 
   addActivity(activity: CreateActivityInput): Activity
   updateActivity(activity: UpdateActivityInput): Activity
