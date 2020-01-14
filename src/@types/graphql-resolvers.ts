@@ -182,7 +182,8 @@ export type QueryClientArgs = {
 
 export type QueryClientsArgs = {
   type?: Maybe<Array<Maybe<Scalars['String']>>>,
-  city?: Maybe<Array<Maybe<Scalars['String']>>>
+  city?: Maybe<Array<Maybe<Scalars['String']>>>,
+  sort?: Maybe<SortInput>
 };
 
 
@@ -207,6 +208,16 @@ export type Settings = {
   pushNotifications: Scalars['Boolean'],
   unscribeEmailLink: Scalars['Boolean'],
   signature: Scalars['String'],
+};
+
+export enum SortDirectionInput {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
+export type SortInput = {
+  field: Scalars['String'],
+  direction: SortDirectionInput,
 };
 
 export type Token = {
@@ -315,6 +326,8 @@ export type ResolversTypes = {
   Client: ResolverTypeWrapper<Client>,
   Activity: ResolverTypeWrapper<Activity>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
+  SortInput: SortInput,
+  SortDirectionInput: SortDirectionInput,
   Filter: ResolverTypeWrapper<Filter>,
   FilterOption: ResolverTypeWrapper<FilterOption>,
   Mutation: ResolverTypeWrapper<{}>,
@@ -339,6 +352,8 @@ export type ResolversParentTypes = {
   Client: Client,
   Activity: Activity,
   Date: Scalars['Date'],
+  SortInput: SortInput,
+  SortDirectionInput: SortDirectionInput,
   Filter: Filter,
   FilterOption: FilterOption,
   Mutation: {},
