@@ -1,5 +1,5 @@
 import { AuthenticationError, UserInputError, ApolloError } from 'apollo-server-express';
-import { Resolvers, Post, Author, Activity, Client } from './@types/graphql-resolvers';
+import { Resolvers, Post, Author, Activity, Client, SortDirectionInput } from './@types/graphql-resolvers';
 import Users from './Models/Users';
 import Clients from './Models/Clients';
 import Activities from './Models/Activity'
@@ -236,7 +236,7 @@ export const resolvers: Resolvers = {
             const users = await Users.find({}).exec();
             return users;
         },
-        clients: async (_, {type, city}, {_id}, ___) => {
+        clients: async (_, {type, city, sort}, {_id}, ___) => {
             if (!_id) throw new AuthenticationError('you must be logged in'); 
             const filter: ClientFilter = {
                 user: _id,
@@ -249,9 +249,10 @@ export const resolvers: Resolvers = {
             if (city) {
                 filter.city = city;
             }
-
-            const clients = await Clients.find(filter).exec();
-            return clients;
+            if(!sort) {
+                sort = {field: 'name', direction: SortDirectionInput.Asc};
+            }
+            return await Clients.find(filter).sort({[sort.field]:sort.direction}).exec();
             // return clients.map((client) => {return { data: client }});
         }
     },
