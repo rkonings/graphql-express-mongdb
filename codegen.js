@@ -9,6 +9,9 @@ module.exports = {
               "typescript-resolvers",
           ],
       },
+      "../react-app/src/modules/introspection-result.ts": {
+        "plugins": [ "fragment-matcher" ]
+      },
       "../react-app/src/modules/hooks.tsx": {
         "documents": "./src/Modules/*/*/*.ts",
         "plugins": [
