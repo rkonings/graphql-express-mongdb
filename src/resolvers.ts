@@ -99,6 +99,8 @@ export const resolvers: Resolvers = {
         parseLiteral(ast) {
           if (ast.kind === Kind.INT) {
             return new Date(ast.value) // ast value is always in string format
+          } else if(ast.kind === Kind.STRING) {
+            return new Date(ast.value) // ast value is always in string format
           }
           return null;
         },
