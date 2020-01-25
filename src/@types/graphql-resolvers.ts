@@ -235,7 +235,6 @@ export type SortInput = {
 export type Time = {
    __typename?: 'Time',
   client: Scalars['String'],
-  user: User,
   task: Scalars['String'],
   start: Scalars['Date'],
   end: Scalars['Date'],
@@ -484,7 +483,6 @@ export type SettingsResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type TimeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Time'] = ResolversParentTypes['Time']> = {
   client?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
   task?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   start?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
   end?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
