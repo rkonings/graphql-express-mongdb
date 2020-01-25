@@ -3,6 +3,7 @@ import { Resolvers, Post, Author, Activity, Client, SortDirectionInput } from '.
 import Users from './Models/Users';
 import Clients from './Models/Clients';
 import Activities from './Models/Activity'
+import Time from './Models/Time';
 import auth from './Auth';
 import bcrypt from 'bcrypt';
 import faker from 'faker/locale/nl';
@@ -133,6 +134,11 @@ export const resolvers: Resolvers = {
         
             return activity;
         },
+        time: async (_, {time}, {_id}) => {
+            if (!_id) throw new AuthenticationError('you must be logged in'); 
+            const result = await Time.create({...time,user: _id});
+            return result
+        },
         updateActivity: async (_, {activity}, {_id}) => {
             if(activity && !activity._id) throw new UserInputError('No _id fount'); 
 
@@ -193,6 +199,12 @@ export const resolvers: Resolvers = {
         }
     },
     Query: {
+        time: async (_, {client}, {_id: user}) => {
+            if (!user) throw new AuthenticationError('you must be logged in'); 
+            const time = await Time.find({client, user}).exec();
+            if(!time) throw new ApolloError('No client found');
+            return time;
+        },
         filter: async (_, {types}, {_id}) => {
 
             const filters = [];
