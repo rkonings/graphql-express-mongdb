@@ -139,7 +139,7 @@ export const resolvers: Resolvers = {
             if(!time.client) throw new UserInputError('No client id found');
             
             const client = await Clients.findOne({_id: time.client, user: _id});
-            if(!!client) throw new UserInputError('No client found');
+            if(!client) throw new UserInputError('No client found');
             
             const result = await Time.create({...time,user: _id});
             return result
