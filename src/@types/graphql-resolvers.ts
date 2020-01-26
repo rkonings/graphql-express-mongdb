@@ -234,10 +234,12 @@ export type SortInput = {
 
 export type Time = {
    __typename?: 'Time',
+  _id: Scalars['String'],
   client: Scalars['String'],
   task: Scalars['String'],
   start: Scalars['Date'],
   end: Scalars['Date'],
+  duration: Scalars['Int'],
 };
 
 export type TimeInput = {
@@ -245,6 +247,7 @@ export type TimeInput = {
   client: Scalars['String'],
   start: Scalars['Date'],
   end: Scalars['Date'],
+  duration: Scalars['Int'],
 };
 
 export type Token = {
@@ -358,6 +361,7 @@ export type ResolversTypes = {
   Filter: ResolverTypeWrapper<Filter>,
   FilterOption: ResolverTypeWrapper<FilterOption>,
   Time: ResolverTypeWrapper<Time>,
+  Int: ResolverTypeWrapper<Scalars['Int']>,
   Mutation: ResolverTypeWrapper<{}>,
   ClientInput: ClientInput,
   CreateActivityInput: CreateActivityInput,
@@ -365,7 +369,6 @@ export type ResolversTypes = {
   Token: ResolverTypeWrapper<Token>,
   InputUser: InputUser,
   InputSettings: InputSettings,
-  Int: ResolverTypeWrapper<Scalars['Int']>,
   TimeInput: TimeInput,
 };
 
@@ -386,6 +389,7 @@ export type ResolversParentTypes = {
   Filter: Filter,
   FilterOption: FilterOption,
   Time: Time,
+  Int: Scalars['Int'],
   Mutation: {},
   ClientInput: ClientInput,
   CreateActivityInput: CreateActivityInput,
@@ -393,7 +397,6 @@ export type ResolversParentTypes = {
   Token: Token,
   InputUser: InputUser,
   InputSettings: InputSettings,
-  Int: Scalars['Int'],
   TimeInput: TimeInput,
 };
 
@@ -482,10 +485,12 @@ export type SettingsResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type TimeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Time'] = ResolversParentTypes['Time']> = {
+  _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   client?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   task?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   start?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
   end?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
+  duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
 };
 
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
