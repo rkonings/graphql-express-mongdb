@@ -13,6 +13,7 @@ type Post {
 }
 
 type Time {
+  _id: String!
   client: String!
   task: String!
   start: Date!
