@@ -7,6 +7,7 @@ const activitySchema = new Schema({
     task: String,
     start: Date,
     end: Date,
+    duration: Number,
     user: {type: mongoose.Schema.Types.ObjectId,ref:'User'},
     client: {type: mongoose.Schema.Types.ObjectId,ref:'Client'},
 });

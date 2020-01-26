@@ -6,5 +6,6 @@ export default gql`
     task
     start
     end
+    duration
   }
 `;
