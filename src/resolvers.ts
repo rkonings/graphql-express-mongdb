@@ -136,6 +136,11 @@ export const resolvers: Resolvers = {
         },
         time: async (_, {time}, {_id}) => {
             if (!_id) throw new AuthenticationError('you must be logged in'); 
+            if(!time.client) throw new UserInputError('No client id found');
+            
+            const client = await Clients.findOne({_id: time.client, user: _id});
+            if(!!client) throw new UserInputError('No client found');
+            
             const result = await Time.create({...time,user: _id});
             return result
         },
