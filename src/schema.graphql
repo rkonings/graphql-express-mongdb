@@ -12,6 +12,15 @@ type Post {
   author: Author
 }
 
+type Time {
+  _id: String!
+  client: String!
+  task: String!
+  start: Date!
+  end: Date!
+  duration: Int!
+}
+
 type Activity {
   _id: String!
   type: String!
@@ -88,6 +97,15 @@ input SortInput {
   direction: SortDirectionInput!
 }
 
+input TimeInput {
+  task: String!
+  client: String!
+  start: Date!
+  end: Date!
+  duration: Int!
+  description: String
+}
+
 type Query {
   posts: [Post]
   authors: [Author]
@@ -98,6 +116,7 @@ type Query {
   activity(_id: String): Activity!
   activities(type: [String]): [Activity] 
   filter(types: [String!]!): [Filter!]!
+  time(client: String!): [Time!]!
 }
 
 type Token {
@@ -134,6 +153,8 @@ input UpdateActivityInput {
   dueDate: Date
 }
 
+
+
 type Mutation {
   addClient(client: ClientInput): Client
   updateClient(client: ClientInput): Client
@@ -148,6 +169,7 @@ type Mutation {
   updateUser(user: InputUser): User
 
   seedClients(amount: Int!): [Client]
+  time(time: TimeInput!): Time!
 }
 
 schema {

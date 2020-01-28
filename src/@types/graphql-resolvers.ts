@@ -103,6 +103,7 @@ export type Mutation = {
   login?: Maybe<Token>,
   updateUser?: Maybe<User>,
   seedClients?: Maybe<Array<Maybe<Client>>>,
+  time: Time,
 };
 
 
@@ -154,6 +155,11 @@ export type MutationSeedClientsArgs = {
   amount: Scalars['Int']
 };
 
+
+export type MutationTimeArgs = {
+  time: TimeInput
+};
+
 export type Post = {
    __typename?: 'Post',
   id: Scalars['String'],
@@ -172,6 +178,7 @@ export type Query = {
   activity: Activity,
   activities?: Maybe<Array<Maybe<Activity>>>,
   filter: Array<Filter>,
+  time: Array<Time>,
 };
 
 
@@ -201,6 +208,11 @@ export type QueryFilterArgs = {
   types: Array<Scalars['String']>
 };
 
+
+export type QueryTimeArgs = {
+  client: Scalars['String']
+};
+
 export type Settings = {
    __typename?: 'Settings',
   language: Scalars['String'],
@@ -218,6 +230,24 @@ export enum SortDirectionInput {
 export type SortInput = {
   field: Scalars['String'],
   direction: SortDirectionInput,
+};
+
+export type Time = {
+   __typename?: 'Time',
+  _id: Scalars['String'],
+  client: Scalars['String'],
+  task: Scalars['String'],
+  start: Scalars['Date'],
+  end: Scalars['Date'],
+  duration: Scalars['Int'],
+};
+
+export type TimeInput = {
+  task: Scalars['String'],
+  client: Scalars['String'],
+  start: Scalars['Date'],
+  end: Scalars['Date'],
+  duration: Scalars['Int'],
 };
 
 export type Token = {
@@ -330,6 +360,8 @@ export type ResolversTypes = {
   SortDirectionInput: SortDirectionInput,
   Filter: ResolverTypeWrapper<Filter>,
   FilterOption: ResolverTypeWrapper<FilterOption>,
+  Time: ResolverTypeWrapper<Time>,
+  Int: ResolverTypeWrapper<Scalars['Int']>,
   Mutation: ResolverTypeWrapper<{}>,
   ClientInput: ClientInput,
   CreateActivityInput: CreateActivityInput,
@@ -337,7 +369,7 @@ export type ResolversTypes = {
   Token: ResolverTypeWrapper<Token>,
   InputUser: InputUser,
   InputSettings: InputSettings,
-  Int: ResolverTypeWrapper<Scalars['Int']>,
+  TimeInput: TimeInput,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -356,6 +388,8 @@ export type ResolversParentTypes = {
   SortDirectionInput: SortDirectionInput,
   Filter: Filter,
   FilterOption: FilterOption,
+  Time: Time,
+  Int: Scalars['Int'],
   Mutation: {},
   ClientInput: ClientInput,
   CreateActivityInput: CreateActivityInput,
@@ -363,7 +397,7 @@ export type ResolversParentTypes = {
   Token: Token,
   InputUser: InputUser,
   InputSettings: InputSettings,
-  Int: Scalars['Int'],
+  TimeInput: TimeInput,
 };
 
 export type ActivityResolvers<ContextType = any, ParentType extends ResolversParentTypes['Activity'] = ResolversParentTypes['Activity']> = {
@@ -420,6 +454,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   login?: Resolver<Maybe<ResolversTypes['Token']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>,
   updateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, MutationUpdateUserArgs>,
   seedClients?: Resolver<Maybe<Array<Maybe<ResolversTypes['Client']>>>, ParentType, ContextType, RequireFields<MutationSeedClientsArgs, 'amount'>>,
+  time?: Resolver<ResolversTypes['Time'], ParentType, ContextType, RequireFields<MutationTimeArgs, 'time'>>,
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
@@ -438,6 +473,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   activity?: Resolver<ResolversTypes['Activity'], ParentType, ContextType, QueryActivityArgs>,
   activities?: Resolver<Maybe<Array<Maybe<ResolversTypes['Activity']>>>, ParentType, ContextType, QueryActivitiesArgs>,
   filter?: Resolver<Array<ResolversTypes['Filter']>, ParentType, ContextType, RequireFields<QueryFilterArgs, 'types'>>,
+  time?: Resolver<Array<ResolversTypes['Time']>, ParentType, ContextType, RequireFields<QueryTimeArgs, 'client'>>,
 };
 
 export type SettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Settings'] = ResolversParentTypes['Settings']> = {
@@ -446,6 +482,15 @@ export type SettingsResolvers<ContextType = any, ParentType extends ResolversPar
   pushNotifications?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   unscribeEmailLink?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   signature?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
+
+export type TimeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Time'] = ResolversParentTypes['Time']> = {
+  _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  client?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  task?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  start?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
+  end?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
+  duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
 };
 
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
@@ -472,6 +517,7 @@ export type Resolvers<ContextType = any> = {
   Post?: PostResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   Settings?: SettingsResolvers<ContextType>,
+  Time?: TimeResolvers<ContextType>,
   Token?: TokenResolvers<ContextType>,
   User?: UserResolvers<ContextType>,
 };
